@@ -23,5 +23,22 @@ namespace Conventions.API.Repositories
         {
             return _people.SingleOrDefault(person => person.Id == id);
         }
+
+        public void CreatePerson(Person person)
+        {
+            _people.Add(person);
+        }
+
+        public void UpdatePerson(Person person)
+        {
+            var index = _people.FindIndex(existingPerson => existingPerson.Id == person.Id);
+            _people[index] = person;
+        }
+
+        public void DeletePerson(Guid id)
+        {
+            var index = _people.FindIndex(existingPerson => existingPerson.Id == id);
+            _people.RemoveAt(index);
+        }
     }
 }

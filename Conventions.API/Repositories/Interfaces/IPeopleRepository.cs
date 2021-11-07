@@ -9,5 +9,8 @@ namespace Conventions.API.Repositories
     {
         IEnumerable<Person> GetPeople();
         Person GetPerson(Guid id);
+        void CreatePerson(Person person);
+        void UpdatePerson(Person person);
+        void DeletePerson(Guid id);
     }
 }
