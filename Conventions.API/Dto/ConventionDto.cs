@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Conventions.API.Entities
+namespace Conventions.API.Dto
 {
-    public class Convention
+    public class ConventionDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -16,6 +16,6 @@ namespace Conventions.API.Entities
         /// The locations id needs to be a string due to the nature of the ids from the breweries api
         /// </summary>
         public IEnumerable<string> LocationsId { get; set; }
-        public IEnumerable<Guid> AttendeesId { get; set; }
+        public IEnumerable<Person> Attendees { get; set; }
     }
 }

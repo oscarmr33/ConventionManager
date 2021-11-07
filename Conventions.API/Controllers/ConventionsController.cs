@@ -1,4 +1,6 @@
-﻿using Conventions.API.Entities;
+﻿using Conventions.API.Dto;
+using Conventions.API.Entities;
+using Conventions.API.Extensions;
 using Conventions.API.Repositories;
 using Conventions.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +16,18 @@ namespace Conventions.API.Controllers
     public class ConventionsController : ControllerBase
     {
         private readonly IConventionRepository _conventionRepository;
+        private readonly IPeopleRepository _peopleRepository;
 
-        public ConventionsController(IConventionRepository conventionRepository)
+        public ConventionsController(IConventionRepository conventionRepository, IPeopleRepository peopleRepository)
         {
             _conventionRepository = conventionRepository;
+            _peopleRepository = peopleRepository;
         }
 
         [HttpGet]
-        public IEnumerable<Convention> GetConventions()
+        public IEnumerable<ConventionDto> GetConventions()
         {
-            return  _conventionRepository.GetConventions();
+            return  _conventionRepository.GetConventions().Select(convention => convention.AsDto(_peopleRepository));
         }
 
         [HttpGet("{id}")]
