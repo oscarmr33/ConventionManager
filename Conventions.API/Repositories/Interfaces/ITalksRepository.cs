@@ -10,5 +10,8 @@ namespace Conventions.API.Repositories.Interfaces
     {
         IEnumerable<Talk> GetTalks();
         Talk GetTalk(Guid id);
+        void CreateTalk(Talk talk);
+        void UpdateTalk(Talk talk);
+        void DeleteTalk(Guid id);
     }
 }

@@ -32,6 +32,7 @@ namespace Conventions.API
             services.AddControllers();
             services.AddSingleton<IPeopleRepository, InMemPeopleRepository>();
             services.AddSingleton<IConventionRepository, InMemConventionRepository>();
+            services.AddSingleton<ITalksRepository, InMenTalksRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Conventions.API", Version = "v1" });

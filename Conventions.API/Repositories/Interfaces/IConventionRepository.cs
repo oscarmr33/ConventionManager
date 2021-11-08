@@ -10,5 +10,8 @@ namespace Conventions.API.Repositories.Interfaces
     {
         IEnumerable<Convention> GetConventions();
         Convention GetConvention(Guid id);
+        void CreateConvention(Convention convention);
+        void UpdateConvention(Convention convention);
+        void DeleteConvention(Guid id);
     }
 }

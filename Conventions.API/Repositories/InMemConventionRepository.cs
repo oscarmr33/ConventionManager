@@ -9,18 +9,11 @@ namespace Conventions.API.Repositories
 {
     public class InMemConventionRepository : IConventionRepository
     {
-        private IPeopleRepository _peopleRepository;
-
-        public InMemConventionRepository(IPeopleRepository peopleRepository)
-        {
-            _peopleRepository = peopleRepository;
-        }
-
         private List<Convention> _conventions = new()
         {
             new Convention 
             {
-                Id = Guid.NewGuid(), 
+                Id = new Guid("48988684-c145-4a2d-8fa9-b3ff2fa6f21b"), 
                 Name = "Spring Convention",
                 Description = "The spring convention for the company",
                 StartDate = new DateTimeOffset(2021,3,1,8,0,0,TimeSpan.Zero), 
@@ -35,7 +28,7 @@ namespace Conventions.API.Repositories
             },
             new Convention
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("7d167f30-7bad-4831-9c34-42b9c8556cb5"),
                 Name = "Summer Convention",
                 Description = "The summer convention for the company",
                 StartDate = new DateTimeOffset(2021, 7, 1, 8, 0, 0, TimeSpan.Zero),
@@ -49,7 +42,7 @@ namespace Conventions.API.Repositories
             },
             new Convention
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("85e06ccc-5c5f-4e3d-806f-344c2f13fe07"),
                 Name = "Winter Convention",
                 Description = "The winter convention for the company",
                 StartDate = new DateTimeOffset(2021, 12, 1, 8, 0, 0, TimeSpan.Zero),
@@ -71,6 +64,23 @@ namespace Conventions.API.Repositories
         public Convention GetConvention(Guid id)
         {
             return _conventions.SingleOrDefault(convention => convention.Id == id);
+        }
+
+        public void CreateConvention(Convention convention)
+        {
+            _conventions.Add(convention);
+        }
+
+        public void UpdateConvention(Convention convention)
+        {
+            var index = _conventions.FindIndex(existingConvention => existingConvention.Id == convention.Id);
+            _conventions[index] = convention;
+        }
+
+        public void DeleteConvention(Guid id)
+        {
+            var index = _conventions.FindIndex(existingConvention => existingConvention.Id == id);
+            _conventions.RemoveAt(index);
         }
     }
 }

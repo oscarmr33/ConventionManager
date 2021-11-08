@@ -1,6 +1,7 @@
 ﻿using Conventions.API.Dto;
 using Conventions.API.Entities;
 using Conventions.API.Repositories;
+using Conventions.API.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,23 @@ namespace Conventions.API.Extensions
                 StartDate = convention.StartDate,
                 EndDate = convention.EndDate,
                 LocationsId = convention.LocationsId,
-                Attendees = peopleRepository.GetPeople().Where(person => convention.AttendeesId.Contains(person.Id)).Select(person => person)
+                Attendees = peopleRepository.GetPeople().Where(person => convention.AttendeesId.Contains(person.Id))
+            };
+        }
+
+        public static TalkDto AsDto(this Talk talk, IPeopleRepository peopleRepository, IConventionRepository convetionRepository)
+        {
+            return new TalkDto()
+            {
+                Id = talk.Id,
+                Name = talk.Name,
+                Description = talk.Description,
+                LengthHours = talk.LengthHours,
+                StartDate = talk.StartDate,
+                LocationId = talk.LocationId,
+                Speaker = peopleRepository.GetPerson(talk.SpeakerId),
+                Convention = convetionRepository.GetConvention(talk.ConventionId),
+                Attendees = peopleRepository.GetPeople().Where(person => talk.AttendeesId.Contains(person.Id)).ToList()
             };
         }
     }

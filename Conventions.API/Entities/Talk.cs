@@ -11,7 +11,7 @@ namespace Conventions.API.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTimeOffset StartDate { get; set; }
-        public int LengthHours { get; set; }
+        public decimal LengthHours { get; set; }
         public Guid SpeakerId { get; set; }
         public Guid ConventionId { get; set; }
         public List<Guid> AttendeesId { get; set; }
