@@ -1,13 +1,12 @@
-﻿using Conventions.API.Dto;
-using Conventions.API.Entities;
-using Conventions.API.Extensions;
+﻿using Conventions.API.Extensions;
 using Conventions.API.Repositories;
 using Conventions.API.Repositories.Interfaces;
+using Conventions.Models.Dto;
+using Conventions.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Conventions.API.Controllers
 {
@@ -35,13 +34,20 @@ namespace Conventions.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<TalkDto> Gettalk(Guid id)
         {
-            var talk = _talkRepository.GetTalk(id);
-            if(talk is null)
+            try
             {
-                return NotFound();
-            }
+                var talk = _talkRepository.GetTalk(id);
+                if (talk is null)
+                {
+                    return NotFound();
+                }
 
-            return talk.AsDto(_peopleRepository, _conventionRepository);
+                return talk.AsDto(_peopleRepository, _conventionRepository);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error has occured while Getting the talk: {e.Message}");
+            }
         }
 
         //POST /talks

@@ -1,14 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 
-namespace Conventions.API.Dto
+namespace Conventions.Models.Dto
 {
-    public class CreatePersonDto
+    public class PersonDto
     {
-        [Required]
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
-        [Required]
         public string LastName { get; set; }
-        [Required]
         public string Email { get; set; }
         public string Telephone { get; set; }
     }

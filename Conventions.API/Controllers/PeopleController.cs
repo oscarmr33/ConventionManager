@@ -1,11 +1,11 @@
-﻿using Conventions.API.Dto;
-using Conventions.API.Extensions;
+﻿using Conventions.API.Extensions;
 using Conventions.API.Repositories;
+using Conventions.Models.Dto;
+using Conventions.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Conventions.API.Controllers
 {
@@ -31,65 +31,93 @@ namespace Conventions.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<PersonDto> GetPerson(Guid id)
         {
-            var person = _peopleRepository.GetPerson(id);
-            if( person == null)
+            try
             {
-                return NotFound();
-            }
+                var person = _peopleRepository.GetPerson(id);
+                if (person == null)
+                {
+                    return NotFound();
+                }
 
-            return person.AsDto();
+                return person.AsDto();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error has occured while Getting the person: {e.Message}");
+            }
         }
 
         //POST /people
         [HttpPost]
         public ActionResult<PersonDto> CreatePerson(CreatePersonDto createPersonDto)
         {
-            Person person = new()
+            try
             {
-                Id = Guid.NewGuid(),
-                FirstName = createPersonDto.FirstName,
-                LastName = createPersonDto.LastName,
-                Email = createPersonDto.Email,
-                Telephone = createPersonDto.Telephone
-            };
+                Person person = new()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = createPersonDto.FirstName,
+                    LastName = createPersonDto.LastName,
+                    Email = createPersonDto.Email,
+                    Telephone = createPersonDto.Telephone
+                };
 
-            _peopleRepository.CreatePerson(person);
+                _peopleRepository.CreatePerson(person);
 
-            return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, person.AsDto());
+                return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, person.AsDto());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error has occured while Creating the person: {e.Message}");
+            }
         }
 
         //PUT /people/id
         [HttpPut("{id}")]
         public ActionResult UpdatePerson(Guid id, UpdatePersonDto updatePersonDto)
         {
-            var existing = _peopleRepository.GetPerson(id);
-            if(existing == null)
+            try
             {
-                return NotFound();
+                var existing = _peopleRepository.GetPerson(id);
+                if (existing == null)
+                {
+                    return NotFound();
+                }
+
+                existing.FirstName = updatePersonDto.FirstName;
+                existing.LastName = updatePersonDto.LastName;
+                existing.Telephone = updatePersonDto.Telephone;
+                existing.Email = updatePersonDto.Email;
+
+                _peopleRepository.UpdatePerson(existing);
+
+                return NoContent();
             }
-
-            existing.FirstName = updatePersonDto.FirstName;
-            existing.LastName = updatePersonDto.LastName;
-            existing.Telephone = updatePersonDto.Telephone;
-            existing.Email = updatePersonDto.Email;
-
-            _peopleRepository.UpdatePerson(existing);
-
-            return NoContent();
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error has occured while updating the person: {e.Message}");
+            }
         }
 
         //DELETE /people/id
         [HttpDelete("{id}")]
         public ActionResult DeletePerson(Guid id)
         {
-            var existing = _peopleRepository.GetPerson(id);
-            if (existing == null)
+            try
             {
-                return NotFound();
-            }
+                var existing = _peopleRepository.GetPerson(id);
+                if (existing == null)
+                {
+                    return NotFound();
+                }
 
-            _peopleRepository.DeletePerson(id);
-            return NoContent();
+                _peopleRepository.DeletePerson(id);
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error has occured while Deleting the person: {e.Message}");
+            }
         }
     }
 }

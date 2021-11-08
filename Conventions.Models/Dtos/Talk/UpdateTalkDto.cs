@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Conventions.API.Dto
+namespace Conventions.Models.Dto
 {
-    public class CreateTalkDto
-    {
+	public class UpdateTalkDto
+	{
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }

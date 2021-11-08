@@ -1,10 +1,8 @@
-﻿using Conventions.API.Entities;
+﻿using Conventions.Models.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Conventions.API.Dto
+namespace Conventions.Models.Dto
 {
     public class TalkDto
     {

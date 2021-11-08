@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Conventions.API
+namespace Conventions.Models.Entities
 {
     public class Person
     {

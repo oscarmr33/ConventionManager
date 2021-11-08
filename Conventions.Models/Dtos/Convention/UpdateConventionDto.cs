@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace Conventions.API.Entities
+namespace Conventions.Models.Dto
 {
-    public class Convention
+    public class UpdateConventionDto
     {
-        public Guid Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        [Required]
         public DateTimeOffset StartDate { get; set; }
+        [Required]
         public DateTimeOffset EndDate { get; set; }
-        /// <summary>
-        /// The locations id needs to be a string due to the nature of the ids from the breweries api
-        /// </summary>
         public IEnumerable<string> LocationsId { get; set; }
         public IEnumerable<Guid> AttendeesId { get; set; }
     }
