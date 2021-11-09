@@ -31,7 +31,7 @@ namespace Conventions.API.Extensions
                 StartDate = convention.StartDate,
                 EndDate = convention.EndDate,
                 LocationsId = convention.LocationsId,
-                Attendees = peopleRepository.GetPeople().Where(person => convention.AttendeesId.Contains(person.Id))
+                Attendees = peopleRepository.GetPeople().Where(person => convention.AttendeesId?.Contains(person.Id) ?? false)
             };
         }
 

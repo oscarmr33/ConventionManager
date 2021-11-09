@@ -1,0 +1,77 @@
+﻿@model ConventionsClient.Models.ConventionModel
+
+@{
+    ViewBag.Title = "Convention";
+}
+
+<h2>Convention</h2>
+
+<div>
+    <dl class="dl-horizontal ">
+        <dt class=" no-gutters">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+    </dl>
+    <br /><br />
+    <h4>Attendees</h4>
+    <table class="table" border-collapse="collapse;">
+        @foreach (var item in Model.Attendees)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </td>
+            </tr>
+        }
+    </table>
+    <br />
+    <h4>Locations</h4>
+    <table class="table" border-collapse="collapse;">
+        @foreach (var item in Model.Locations)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
