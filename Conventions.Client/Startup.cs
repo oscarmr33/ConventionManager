@@ -69,6 +69,7 @@ namespace Convention.Client
                     options.Scope.Add("email");
                     options.Scope.Add("telephone");
                     options.Scope.Add("conventionsapi");
+                    options.Scope.Add("offline_access");
                     options.ClaimActions.DeleteClaim("sid");
                     options.ClaimActions.DeleteClaim("idp");
                     options.ClaimActions.DeleteClaim("s_hash");

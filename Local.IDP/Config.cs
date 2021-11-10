@@ -51,6 +51,7 @@ namespace Local.IDP
                     ClientName = "Conventions Manager",
                     ClientId = "conventionsclient",
                     AllowedGrantTypes = GrantTypes.Code,
+                    AllowOfflineAccess = true,
                     //AllowedGrantTypes = new List<string> () { GrantType.AuthorizationCode },
                     RedirectUris = new List<string>()
 					{

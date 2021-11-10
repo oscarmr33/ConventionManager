@@ -71,5 +71,13 @@ namespace Convention.Client.Helpers
 			var apiCaller = new ApiCaller(_httpClientFactory);
 			await apiCaller.Post(_baseUrl, talk);
 		}
+
+		public async Task RegisterToTalk(Guid id, Guid userId)
+		{
+			//GET /talks/id?attendeeId
+			var url = $"{_baseUrl}/register/{id}?attendeeId={userId}";
+			var apiCaller = new ApiCaller(_httpClientFactory);
+			await apiCaller.Get(url);
+		}
 	}
 }

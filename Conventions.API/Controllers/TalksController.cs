@@ -151,7 +151,7 @@ namespace Conventions.API.Controllers
             }
         }
 
-        //GET /talks/id&attendeeId
+        //GET /talks/id?attendeeId
         [HttpGet("register/{id}")]
         public ActionResult RegisterToTalk(Guid id, Guid attendeeId)
 		{

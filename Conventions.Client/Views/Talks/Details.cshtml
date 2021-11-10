@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>TalkModel</h4>
+    <h4>Talk @Model.Name</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -43,7 +43,7 @@
     </dl>
 </div>
 <br />
-@Html.ActionLink("Subscribe to Talk", "Register", "Conventions", new { id = Model.Convention.Id })
+@Html.ActionLink("Subscribe to Talk", "Register", "Talks", new { id = Model.Id })
 <br />
 <br />
 <h4>Attendees</h4>
@@ -65,6 +65,5 @@
 </table>
 <br />
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back to Conventions", "Index", "Conventions", new { /* id = Model.PrimaryKey */ }) |
 </div>

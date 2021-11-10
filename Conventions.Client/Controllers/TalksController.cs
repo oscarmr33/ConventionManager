@@ -86,7 +86,7 @@ namespace Convention.Client.Controllers
                     await _talkProcesor.CreateTalk(model);
                 }
 
-                return Redirect("/Conventions");
+                return Redirect($"/Talks/TalksByConvention/{id}");
             }
             catch (HttpRequestException e)
             {
@@ -98,16 +98,11 @@ namespace Convention.Client.Controllers
             }
         }
 
-        private UserDto GetUserFromAuth()
+        public async Task<ActionResult> Register(Guid id)
         {
-            return new UserDto()
-            {
-                Id = new Guid(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value),
-                FirstName = $"{User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value}",
-                LastName = $"{User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value}",
-                Email = User.Claims.FirstOrDefault(c => c.Type == "email")?.Value,
-                Telephone = User.Claims.FirstOrDefault(c => c.Type == "telephone")?.Value
-            };
+            var userId = new Guid(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value);
+            await _talkProcesor.RegisterToTalk(id, userId);
+            return Redirect($"/Talks/Details/{id}");
         }
     }
 }
