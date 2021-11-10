@@ -15,7 +15,7 @@ namespace Conventions.Models.Entities
         /// <summary>
         /// The locations id needs to be a string due to the nature of the ids from the breweries api
         /// </summary>
-        public IEnumerable<string> LocationsId { get; set; }
-        public IEnumerable<Guid> AttendeesId { get; set; }
+        public List<string> LocationsId { get; set; } = new List<string>();
+        public List<Guid> AttendeesId { get; set; } = new List<Guid>();
     }
 }

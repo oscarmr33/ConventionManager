@@ -33,7 +33,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if (User.IsInRole("admin"))
+                    {
                     <li><a asp-area="" asp-controller="Conventions" asp-action="Index">Home</a></li>                    
+                    }
                     @if (User.Identity.IsAuthenticated)
                     {
                     <li><a asp-area="" asp-controller="Conventions" asp-action="Logout">Logout</a></li>

@@ -1,6 +1,7 @@
 ﻿using Convention.Client.Helpers;
 using Convention.Client.Models;
 using Convention.Client.ViewModels;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -36,6 +37,11 @@ namespace Convention.Client.Controllers
             var apiCaller = new ApiCaller();
             var model = await apiCaller.Get<IEnumerable<ConventionModel>>(_baseUrl);
 
+            if (User.Identity.IsAuthenticated)
+            {
+                await CreateUser();
+            }
+
             return View(model);
         }
 
@@ -46,6 +52,7 @@ namespace Convention.Client.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]//Comma separate for more
         public ActionResult Create()
         {
             ViewBag.Message = "Employee Sign Up";
@@ -55,6 +62,7 @@ namespace Convention.Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="admin")]//Comma separate for more
         public ActionResult Create(ConventionModel model)
         {
             if (ModelState.IsValid)
@@ -66,6 +74,7 @@ namespace Convention.Client.Controllers
             return Redirect("/Conventions");
         }
 
+        [Authorize(Roles = "admin")]//Comma separate for more
         public async Task<ActionResult> Edit(Guid id)
         {
             var model = await _procesor.GetConvention(id);
@@ -74,6 +83,7 @@ namespace Convention.Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]//Comma separate for more
         public ActionResult Edit(ConventionModel model)
         {
             if (ModelState.IsValid)
@@ -104,6 +114,32 @@ namespace Convention.Client.Controllers
             {
                 Debug.WriteLine($"Claim type: {claim.Type} - Claim value: {claim.Value}");
             }
+        }
+
+        public async Task CreateUser()
+		{
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
+            var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
+
+            if(metaDataResponse.IsError)
+			{
+                throw new Exception("Problem accessing the discovery endpoint.", metaDataResponse.Exception);
+			}
+
+            var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+
+            var userInfoResponse = await idpClient.GetUserInfoAsync(
+                new UserInfoRequest { 
+                    Address = metaDataResponse.UserInfoEndpoint,
+                    Token = identityToken
+                });
+
+            if(userInfoResponse.IsError)
+            {
+                throw new Exception("Problem accessing the UserInfo endpoint.", metaDataResponse.Exception);
+            }
+
+            var address = userInfoResponse.Claims.FirstOrDefault(c => c.Type == "address")?.Value;
         }
     }
 }

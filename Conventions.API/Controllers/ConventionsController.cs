@@ -64,8 +64,8 @@ namespace Conventions.API.Controllers
                     StartDate = createConvention.StartDate,
                     EndDate = createConvention.EndDate,
                     Description = createConvention.Description,
-                    AttendeesId = createConvention.AttendeesId,
-                    LocationsId = createConvention.LocationsId
+                    AttendeesId = createConvention.AttendeesId.ToList(),
+                    LocationsId = createConvention.LocationsId.ToList()
                 };
 
                 _conventionRepository.CreateConvention(convention);
@@ -94,8 +94,6 @@ namespace Conventions.API.Controllers
                 existing.StartDate = updateConventionDto.StartDate;
                 existing.EndDate = updateConventionDto.EndDate;
                 existing.Description = updateConventionDto.Description;
-                existing.AttendeesId = updateConventionDto.AttendeesId;
-                existing.LocationsId = updateConventionDto.LocationsId;
 
                 _conventionRepository.UpdateConvention(existing);
 

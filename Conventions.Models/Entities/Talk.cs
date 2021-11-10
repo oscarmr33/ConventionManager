@@ -14,7 +14,7 @@ namespace Conventions.Models.Entities
         public decimal LengthHours { get; set; }
         public Guid SpeakerId { get; set; }
         public Guid ConventionId { get; set; }
-        public List<Guid> AttendeesId { get; set; }
+        public List<Guid> AttendeesId { get; set; } = new List<Guid>();
         public string LocationId { get; set; }
     }
 }

@@ -17,14 +17,6 @@ namespace IdentityServerHost.Quickstart.UI
         {
             get
             {
-                var address = new
-                {
-                    street_address = "One Hacker Way",
-                    locality = "Heidelberg",
-                    postal_code = 69118,
-                    country = "Germany"
-                };
-
                 return new List<TestUser>
                 {
                     new TestUser
@@ -36,6 +28,8 @@ namespace IdentityServerHost.Quickstart.UI
                         {
                             new Claim(JwtClaimTypes.GivenName, "Frank"),
                             new Claim(JwtClaimTypes.FamilyName, "Underwood"),
+                            new Claim(JwtClaimTypes.Address, "Fake street 123"),
+                            new Claim("role", "admin")
                         }
                     },
                     new TestUser
@@ -47,6 +41,8 @@ namespace IdentityServerHost.Quickstart.UI
                         {
                             new Claim(JwtClaimTypes.GivenName, "Claire"),
                             new Claim(JwtClaimTypes.FamilyName, "Underwood"),
+                            new Claim(JwtClaimTypes.Address, "Fake avenue 213"),
+                            new Claim("role", "user")
                         }
                     }
                 };

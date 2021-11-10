@@ -1,5 +1,6 @@
 ﻿using Conventions.API.Extensions;
 using Conventions.API.Repositories;
+using Conventions.API.Repositories.Interfaces;
 using Conventions.Models.Dto;
 using Conventions.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,14 @@ namespace Conventions.API.Controllers
     public class PeopleController : ControllerBase
     {
         private readonly IPeopleRepository _peopleRepository;
+        private readonly IConventionRepository _conventionRepository;
+        private readonly ITalksRepository _talksRepository;
 
-        public PeopleController(IPeopleRepository peopleRepository)
+        public PeopleController(IPeopleRepository peopleRepository, IConventionRepository conventionRepository, ITalksRepository talksRepository)
         {
             _peopleRepository = peopleRepository;
+            _conventionRepository = conventionRepository;
+            _talksRepository = talksRepository;
         }
 
         //GET /people
@@ -119,5 +124,48 @@ namespace Conventions.API.Controllers
                 return StatusCode(500, $"An error has occured while Deleting the person: {e.Message}");
             }
         }
-    }
+
+		[HttpGet("register/{id}")]
+		public ActionResult RegisterToConvention(Guid id, Guid conventionId)
+		{
+			try
+			{
+				var existingConvention = _conventionRepository.GetConvention(conventionId);
+				if (existingConvention == null)
+				{
+					return StatusCode(404, "Convention not found");
+				}
+				if (_peopleRepository.GetPerson(id) == null)
+				{
+					return NotFound();
+				}
+
+				existingConvention.AttendeesId.Add(id);
+
+				return NoContent();
+			}
+			catch (Exception e)
+			{
+				return StatusCode(500, $"An error has occured while Deleting the person: {e.Message}");
+			}
+		}
+
+		[HttpGet("talks/{id}")]
+		public ActionResult<IEnumerable<TalkDto>> GetPersonTalks(Guid id)
+		{
+			try
+			{
+				if (_peopleRepository.GetPerson(id) == null)
+				{
+					return NotFound();
+				}
+
+				return StatusCode(200, _talksRepository.GetTalks().Where(talk => talk.SpeakerId == id).Select(talk => talk.AsDto(_peopleRepository, _conventionRepository)));
+			}
+			catch (Exception e)
+			{
+				return StatusCode(500, $"An error has occured while Getting the talks: {e.Message}");
+			}
+		}
+	}
 }

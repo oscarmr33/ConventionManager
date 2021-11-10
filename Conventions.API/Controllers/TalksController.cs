@@ -152,22 +152,29 @@ namespace Conventions.API.Controllers
         }
 
         //POST /talks/id&attendeeId
-        [HttpPost("{id}")]
+        [HttpGet("register/{id}")]
         public ActionResult RegisterToTalk(Guid id, Guid attendeeId)
 		{
-            var existing = _talkRepository.GetTalk(id);
-            if (existing == null)
+            try
             {
-                return NotFound();
-            }
-            if (_peopleRepository.GetPerson(attendeeId) == null)
-            {
-                return StatusCode(404, "Attendee not found");
-            }
+                var existing = _talkRepository.GetTalk(id);
+                if (existing == null)
+                {
+                    return NotFound();
+                }
+                if (_peopleRepository.GetPerson(attendeeId) == null)
+                {
+                    return StatusCode(404, "Attendee not found");
+                }
 
-            existing.AttendeesId.Add(attendeeId);
+                existing.AttendeesId.Add(attendeeId);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch(Exception e)
+			{
+                return StatusCode(500, $"An error has occurred while Registering user to the talk: {e.Message}");
+			}
         }
     }
 }
