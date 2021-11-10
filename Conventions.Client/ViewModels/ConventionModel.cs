@@ -13,6 +13,6 @@ namespace Convention.Client.Models
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public List<LocationModel> Locations { get; set; } = new List<LocationModel>();
-        public List<PersonModel> Attendees { get; set; } = new List<PersonModel>();
+        public List<UserModel> Attendees { get; set; } = new List<UserModel>();
     }
 }

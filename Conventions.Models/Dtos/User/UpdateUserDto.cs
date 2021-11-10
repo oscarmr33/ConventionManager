@@ -2,7 +2,7 @@
 
 namespace Conventions.Models.Dto
 {
-    public class UpdatePersonDto
+    public class UpdateUserDto
     {
         [Required]
         public string FirstName { get; set; }

@@ -12,9 +12,9 @@ namespace Convention.Client.Models
         public string Description { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public decimal LengthHours { get; set; }
-        public PersonModel Speaker { get; set; }
-        public PersonModel Convention { get; set; }
-        public List<PersonModel> Attendees { get; set; }
+        public UserModel Speaker { get; set; }
+        public UserModel Convention { get; set; }
+        public List<UserModel> Attendees { get; set; }
         public string LocationId { get; set; }
     }
 }

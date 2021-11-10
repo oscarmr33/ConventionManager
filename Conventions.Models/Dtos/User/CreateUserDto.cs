@@ -2,7 +2,7 @@
 
 namespace Conventions.Models.Dto
 {
-    public class CreatePersonDto
+    public class CreateUserDto
     {
         [Required]
         public string FirstName { get; set; }

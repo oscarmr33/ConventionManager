@@ -66,19 +66,23 @@ namespace Convention.Client
                     options.ResponseType = "code";
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
+                    options.Scope.Add("email");
+                    options.Scope.Add("telephone");
                     options.Scope.Add("conventionsapi");
                     options.ClaimActions.DeleteClaim("sid");
                     options.ClaimActions.DeleteClaim("idp");
                     options.ClaimActions.DeleteClaim("s_hash");
                     options.ClaimActions.DeleteClaim("auth_time");
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
+                    options.ClaimActions.MapUniqueJsonKey("email", "email");
+                    options.ClaimActions.MapUniqueJsonKey("telephone", "telephone");
                     options.SaveTokens = true;
                     options.ClientSecret = "secret";
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         NameClaimType = JwtClaimTypes.GivenName,
-                        RoleClaimType = JwtClaimTypes.Role
+                        RoleClaimType = JwtClaimTypes.Role,
                     };
                 });
         }
@@ -110,8 +114,11 @@ namespace Convention.Client
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Conventions}/{action=Index}/{id?}");
+                   name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapControllerRoute(
+                //    name: "Conventions",
+                //    pattern: "{controller=Conventions}/{action=Index}/{id?}");
             });
         }
     }

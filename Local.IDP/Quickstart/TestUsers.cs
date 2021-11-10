@@ -28,7 +28,8 @@ namespace IdentityServerHost.Quickstart.UI
                         {
                             new Claim(JwtClaimTypes.GivenName, "Frank"),
                             new Claim(JwtClaimTypes.FamilyName, "Underwood"),
-                            new Claim(JwtClaimTypes.Address, "Fake street 123"),
+                            new Claim(JwtClaimTypes.Email, "frank@email.com"),
+                            new Claim("telephone", "1242312"),
                             new Claim("role", "admin")
                         }
                     },

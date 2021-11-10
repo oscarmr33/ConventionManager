@@ -18,12 +18,12 @@ namespace Conventions.API.Controllers
     public class ConventionsController : ControllerBase
     {
         private readonly IConventionRepository _conventionRepository;
-        private readonly IPeopleRepository _peopleRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ConventionsController(IConventionRepository conventionRepository, IPeopleRepository peopleRepository)
+        public ConventionsController(IConventionRepository conventionRepository, IUserRepository peopleRepository)
         {
             _conventionRepository = conventionRepository;
-            _peopleRepository = peopleRepository;
+            _userRepository = peopleRepository;
         }
 
         //GET /conventions
@@ -32,7 +32,7 @@ namespace Conventions.API.Controllers
         {
             var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
-            return  _conventionRepository.GetConventions().Select(convention => convention.AsDto(_peopleRepository));
+            return  _conventionRepository.GetConventions().Select(convention => convention.AsDto(_userRepository));
         }
 
         //GET /conventions/id
@@ -47,7 +47,7 @@ namespace Conventions.API.Controllers
                     return NotFound();
                 }
 
-                return convention.AsDto(_peopleRepository);
+                return convention.AsDto(_userRepository);
             }
             catch (Exception e)
             {
@@ -68,14 +68,12 @@ namespace Conventions.API.Controllers
                     Name = createConvention.Name,
                     StartDate = createConvention.StartDate,
                     EndDate = createConvention.EndDate,
-                    Description = createConvention.Description,
-                    AttendeesId = createConvention.AttendeesId.ToList(),
-                    LocationsId = createConvention.LocationsId.ToList()
+                    Description = createConvention.Description
                 };
 
                 _conventionRepository.CreateConvention(convention);
 
-                return CreatedAtAction(nameof(GetConvention), new { id = convention.Id }, convention.AsDto(_peopleRepository));
+                return CreatedAtAction(nameof(GetConvention), new { id = convention.Id }, convention.AsDto(_userRepository));
             }
             catch (Exception e)
             {

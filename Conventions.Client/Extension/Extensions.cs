@@ -21,9 +21,9 @@ namespace Convention.Client.Extension
 			};
 		}
 
-		public static PersonModel FromDto(this PersonDto personDto)
+		public static UserModel FromDto(this UserDto personDto)
 		{
-			return new PersonModel()
+			return new UserModel()
 			{
 				Id = personDto.Id,
 				Email = personDto.Email,

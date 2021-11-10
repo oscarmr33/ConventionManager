@@ -16,23 +16,23 @@ namespace Conventions.API.Controllers
     {
         private readonly ITalksRepository _talkRepository;
         private readonly IConventionRepository _conventionRepository;
-        private readonly IPeopleRepository _peopleRepository;
+        private readonly IUserRepository _userRepository;
 
-        public TalksController(ITalksRepository talksRepository, IConventionRepository conventionRepository, IPeopleRepository peopleRepository)
+        public TalksController(ITalksRepository talksRepository, IConventionRepository conventionRepository, IUserRepository peopleRepository)
         {
             _talkRepository = talksRepository;
             _conventionRepository = conventionRepository;
-            _peopleRepository = peopleRepository;
+            _userRepository = peopleRepository;
         }
 
         [HttpGet]
         public IEnumerable<TalkDto> GetTalks()
         {
-            return _talkRepository.GetTalks().Select(talk => talk.AsDto(_peopleRepository, _conventionRepository));
+            return _talkRepository.GetTalks().Select(talk => talk.AsDto(_userRepository, _conventionRepository));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<TalkDto> Gettalk(Guid id)
+        public ActionResult<TalkDto> GetTalk(Guid id)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Conventions.API.Controllers
                     return NotFound();
                 }
 
-                return talk.AsDto(_peopleRepository, _conventionRepository);
+                return talk.AsDto(_userRepository, _conventionRepository);
             }
             catch (Exception e)
             {
@@ -61,7 +61,7 @@ namespace Conventions.API.Controllers
                     return StatusCode(404, "Convention not found");
                 }
 
-                if (_peopleRepository.GetPerson(createTalk.SpeakerId) == null)
+                if (_userRepository.GetUser(createTalk.SpeakerId) == null)
                 {
                     return StatusCode(404, "Speaker not found");
                 }
@@ -81,7 +81,7 @@ namespace Conventions.API.Controllers
 
                 _talkRepository.CreateTalk(talk);
 
-                return CreatedAtAction(nameof(Gettalk), new { id = talk.Id }, talk.AsDto(_peopleRepository, _conventionRepository));
+                return CreatedAtAction(nameof(GetTalk), new { id = talk.Id }, talk.AsDto(_userRepository, _conventionRepository));
             }
             catch(Exception e)
 			{
@@ -106,7 +106,7 @@ namespace Conventions.API.Controllers
                     return StatusCode(404, "Convention not found");
                 }
 
-                if (_peopleRepository.GetPerson(updateTalkDto.SpeakerId) == null)
+                if (_userRepository.GetUser(updateTalkDto.SpeakerId) == null)
                 {
                     return StatusCode(404, "Speaker not found");
                 }
@@ -162,7 +162,7 @@ namespace Conventions.API.Controllers
                 {
                     return NotFound();
                 }
-                if (_peopleRepository.GetPerson(attendeeId) == null)
+                if (_userRepository.GetUser(attendeeId) == null)
                 {
                     return StatusCode(404, "Attendee not found");
                 }

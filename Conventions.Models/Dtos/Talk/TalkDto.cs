@@ -11,9 +11,9 @@ namespace Conventions.Models.Dto
         public string Description { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public decimal LengthHours { get; set; }
-        public Person Speaker { get; set; }
+        public User Speaker { get; set; }
         public Convention Convention { get; set; }
-        public List<Person> Attendees { get; set; }
+        public List<User> Attendees { get; set; }
         public string LocationId { get; set; }
     }
 }

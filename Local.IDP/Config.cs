@@ -16,7 +16,9 @@ namespace Local.IDP
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
-                new IdentityResource("roles", "Your roles", new List<string> { "role" })
+                new IdentityResource("roles", "Your roles", new List<string> { "role" }),
+                new IdentityResource("email", "Your Email", new List<string> { "email" }),
+                new IdentityResource("telephone", "Your telephone", new List<string> { "telephone" })
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -63,6 +65,8 @@ namespace Local.IDP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "telephone",
                         "roles",
                         "conventionsapi"
                     },

@@ -39,5 +39,24 @@ namespace Convention.Client.Helpers
 
 			return result;
 		}
+
+		public async Task<IEnumerable<ConventionModel>> GetConventions()
+		{
+			var apiCaller = new ApiCaller(_httpClientFactory);
+			return await apiCaller.Get<IEnumerable<ConventionModel>>(_baseUrl);
+		}
+
+		public async Task CreateConvention(ConventionModel convention)
+		{
+			var apiCaller = new ApiCaller(_httpClientFactory);
+			await apiCaller.Post(_baseUrl, convention);
+		}
+
+		public async Task UpdateConvention(ConventionModel convention)
+		{
+			var apiCaller = new ApiCaller(_httpClientFactory);
+			var url = $"{_baseUrl}/{convention.Id}";
+			await apiCaller.Put(url, convention);
+		}
 	}
 }

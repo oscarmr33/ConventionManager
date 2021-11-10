@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -25,9 +26,7 @@ namespace Convention.Client.Helpers
 
 			var httpClient = _httpClientFactory.CreateClient("ConventionsApi");
 
-			var request = new HttpRequestMessage(
-				HttpMethod.Get,
-				$"{httpClient.BaseAddress}{url}");
+			var request = new HttpRequestMessage(HttpMethod.Get, url);
 
 			var response = await httpClient.SendAsync(
 				request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
@@ -45,45 +44,35 @@ namespace Convention.Client.Helpers
 			return res;
 		}
 
-		public void Post<T>(string url, T payload)
+		public async Task Post<T>(string url, T payload)
 		{
-			var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-			httpRequest.Method = "POST";
-			httpRequest.Accept = "application/json";
-			httpRequest.ContentType = "application/json";
+			var httpClient = _httpClientFactory.CreateClient("ConventionsApi");
 
+			var request = new HttpRequestMessage(HttpMethod.Post, url);
 			var data = JsonConvert.SerializeObject(payload);
+			request.Content = new StringContent(data, Encoding.UTF8, "application/json");
 
-			using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
-			{
-				streamWriter.Write(data);
-			}
+			var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
-			var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-			using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+			if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
 			{
-				var result = streamReader.ReadToEnd();
+				throw new HttpRequestException("Access to the Api denied");
 			}
 		}
 
-		public void Put<T>(string url, T payload)
-		{
-			var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-			httpRequest.Method = "PUT";
-			httpRequest.Accept = "application/json";
-			httpRequest.ContentType = "application/json";
+		public async Task Put<T>(string url, T payload)
+		{		
+			var httpClient = _httpClientFactory.CreateClient("ConventionsApi");
 
+			var request = new HttpRequestMessage(HttpMethod.Put, url);
 			var data = JsonConvert.SerializeObject(payload);
+			request.Content = new StringContent(data, Encoding.UTF8, "application/json");
 
-			using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
-			{
-				streamWriter.Write(data);
-			}
+			var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
-			var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-			using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+			if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
 			{
-				var result = streamReader.ReadToEnd();
+				throw new HttpRequestException("Access to the Api denied");
 			}
 		}
 	}

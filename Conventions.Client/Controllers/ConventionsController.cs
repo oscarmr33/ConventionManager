@@ -23,7 +23,6 @@ namespace Convention.Client.Controllers
     public class ConventionsController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _baseUrl = "https://localhost:44398/conventions";
         private readonly ConventionProcesor _procesor;
 
         public ConventionsController(IHttpClientFactory httpClientFactory)
@@ -36,8 +35,7 @@ namespace Convention.Client.Controllers
         {
             try
             {
-                var apiCaller = new ApiCaller(_httpClientFactory);
-                var model = await apiCaller.Get<IEnumerable<ConventionModel>>("conventions");
+                var model = await _procesor.GetConventions();
 
                 return View(model);
             }
@@ -53,15 +51,26 @@ namespace Convention.Client.Controllers
 
         public async Task<ActionResult> Details(Guid id)
         {
-            var model = await _procesor.GetConvention(id);
+            try
+            {
+                var model = await _procesor.GetConvention(id);
 
-            return View(model);
+                return View(model);
+            }
+            catch (HttpRequestException e)
+            {
+                return RedirectToAction("AccessDenied", "Authorization");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         [Authorize(Roles = "admin")]//Comma separate for more
         public ActionResult Create()
         {
-            ViewBag.Message = "Employee Sign Up";
+            ViewBag.Message = "Create a new Convention";
 
             return View();
         }
@@ -69,56 +78,66 @@ namespace Convention.Client.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles ="admin")]//Comma separate for more
-        public ActionResult Create(ConventionModel model)
+        public async Task<ActionResult> Create(ConventionModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var apiCaller = new ApiCaller(_httpClientFactory);
-                apiCaller.Post(_baseUrl, model);
-            }
+                if (ModelState.IsValid)
+                {
+                    await _procesor.CreateConvention(model);
+                }
 
-            return Redirect("/Conventions");
+                return Redirect("/Conventions");
+            }
+            catch (HttpRequestException e)
+            {
+                return RedirectToAction("AccessDenied", "Authorization");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         [Authorize(Roles = "admin")]//Comma separate for more
         public async Task<ActionResult> Edit(Guid id)
         {
-            var model = await _procesor.GetConvention(id);
-            return View(model);
+            try
+            {
+                var model = await _procesor.GetConvention(id);
+                return View(model);
+            }
+            catch (HttpRequestException e)
+            {
+                return RedirectToAction("AccessDenied", "Authorization");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]//Comma separate for more
-        public ActionResult Edit(ConventionModel model)
+        public async Task<ActionResult> Edit(ConventionModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var apiCaller = new ApiCaller(_httpClientFactory);
-                var url = $"{_baseUrl}/{model.Id}";
-                apiCaller.Put(url, model);
+                if (ModelState.IsValid)
+                {
+                    await _procesor.UpdateConvention(model);
+                }
+
+                return Redirect("/Conventions");
             }
-
-            return Redirect("/Conventions");
-        }
-
-        public async Task Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-        }
-
-        public async Task WriteOutIdentityInformation()
-        {
-            //get the saved identity token
-            var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
-
-            //write it out
-            Debug.WriteLine($"Identity toke: {identityToken}");
-
-            foreach (var claim in User.Claims)
+            catch (HttpRequestException e)
             {
-                Debug.WriteLine($"Claim type: {claim.Type} - Claim value: {claim.Value}");
+                return RedirectToAction("AccessDenied", "Authorization");
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 

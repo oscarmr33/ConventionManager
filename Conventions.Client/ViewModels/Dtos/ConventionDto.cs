@@ -16,6 +16,6 @@ namespace Convention.Client.Models
         /// The locations id needs to be a string due to the nature of the ids from the breweries api
         /// </summary>
         public IEnumerable<string> LocationsId { get; set; }
-        public IEnumerable<PersonDto> Attendees { get; set; }
+        public IEnumerable<UserDto> Attendees { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Conventions.API
         {
 
             services.AddControllers();
-            services.AddSingleton<IPeopleRepository, InMemPeopleRepository>();
+            services.AddSingleton<IUserRepository, InMemUserRepository>();
             services.AddSingleton<IConventionRepository, InMemConventionRepository>();
             services.AddSingleton<ITalksRepository, InMenTalksRepository>();
 

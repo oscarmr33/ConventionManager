@@ -2,7 +2,7 @@
 
 namespace Conventions.Models.Dto
 {
-    public class PersonDto
+    public class UserDto
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

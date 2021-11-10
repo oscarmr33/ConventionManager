@@ -9,9 +9,9 @@ namespace Conventions.API.Extensions
 {
     public static class Extensions
     {
-        public static PersonDto AsDto(this Person person)
+        public static UserDto AsDto(this User person)
         {
-            return new PersonDto()
+            return new UserDto()
             {
                 Id = person.Id,
                 FirstName = person.FirstName,
@@ -21,7 +21,7 @@ namespace Conventions.API.Extensions
             };
         }
 
-        public static ConventionDto AsDto(this Convention convention, IPeopleRepository peopleRepository)
+        public static ConventionDto AsDto(this Convention convention, IUserRepository peopleRepository)
         {
             return new ConventionDto()
             {
@@ -31,11 +31,11 @@ namespace Conventions.API.Extensions
                 StartDate = convention.StartDate,
                 EndDate = convention.EndDate,
                 LocationsId = convention.LocationsId,
-                Attendees = peopleRepository.GetPeople().Where(person => convention.AttendeesId?.Contains(person.Id) ?? false)
+                Attendees = peopleRepository.GetUsers().Where(person => convention.AttendeesId?.Contains(person.Id) ?? false)
             };
         }
 
-        public static TalkDto AsDto(this Talk talk, IPeopleRepository peopleRepository, IConventionRepository convetionRepository)
+        public static TalkDto AsDto(this Talk talk, IUserRepository userRepository, IConventionRepository convetionRepository)
         {
             return new TalkDto()
             {
@@ -45,9 +45,9 @@ namespace Conventions.API.Extensions
                 LengthHours = talk.LengthHours,
                 StartDate = talk.StartDate,
                 LocationId = talk.LocationId,
-                Speaker = peopleRepository.GetPerson(talk.SpeakerId),
+                Speaker = userRepository?.GetUser(talk.SpeakerId),
                 Convention = convetionRepository.GetConvention(talk.ConventionId),
-                Attendees = peopleRepository.GetPeople().Where(person => talk.AttendeesId.Contains(person.Id)).ToList()
+                Attendees = userRepository.GetUsers()?.Where(person => talk.AttendeesId?.Contains(person.Id) ?? false).ToList()
             };
         }
     }

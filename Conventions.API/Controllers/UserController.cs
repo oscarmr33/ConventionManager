@@ -12,13 +12,13 @@ namespace Conventions.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PeopleController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IPeopleRepository _peopleRepository;
+        private readonly IUserRepository _peopleRepository;
         private readonly IConventionRepository _conventionRepository;
         private readonly ITalksRepository _talksRepository;
 
-        public PeopleController(IPeopleRepository peopleRepository, IConventionRepository conventionRepository, ITalksRepository talksRepository)
+        public UserController(IUserRepository peopleRepository, IConventionRepository conventionRepository, ITalksRepository talksRepository)
         {
             _peopleRepository = peopleRepository;
             _conventionRepository = conventionRepository;
@@ -27,18 +27,18 @@ namespace Conventions.API.Controllers
 
         //GET /people
         [HttpGet]
-        public IEnumerable<PersonDto> GetPeople()
+        public IEnumerable<UserDto> GetPeople()
         {
-            return _peopleRepository.GetPeople().Select(person => person.AsDto());
+            return _peopleRepository.GetUsers().Select(person => person.AsDto());
         }
 
         //GET /people/id
         [HttpGet("{id}")]
-        public ActionResult<PersonDto> GetPerson(Guid id)
+        public ActionResult<UserDto> GetPerson(Guid id)
         {
             try
             {
-                var person = _peopleRepository.GetPerson(id);
+                var person = _peopleRepository.GetUser(id);
                 if (person == null)
                 {
                     return NotFound();
@@ -54,11 +54,11 @@ namespace Conventions.API.Controllers
 
         //POST /people
         [HttpPost]
-        public ActionResult<PersonDto> CreatePerson(CreatePersonDto createPersonDto)
+        public ActionResult<UserDto> CreatePerson(CreateUserDto createPersonDto)
         {
             try
             {
-                Person person = new()
+                User person = new()
                 {
                     Id = Guid.NewGuid(),
                     FirstName = createPersonDto.FirstName,
@@ -67,7 +67,7 @@ namespace Conventions.API.Controllers
                     Telephone = createPersonDto.Telephone
                 };
 
-                _peopleRepository.CreatePerson(person);
+                _peopleRepository.CreateUser(person);
 
                 return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, person.AsDto());
             }
@@ -79,11 +79,11 @@ namespace Conventions.API.Controllers
 
         //PUT /people/id
         [HttpPut("{id}")]
-        public ActionResult UpdatePerson(Guid id, UpdatePersonDto updatePersonDto)
+        public ActionResult UpdatePerson(Guid id, UpdateUserDto updatePersonDto)
         {
             try
             {
-                var existing = _peopleRepository.GetPerson(id);
+                var existing = _peopleRepository.GetUser(id);
                 if (existing == null)
                 {
                     return NotFound();
@@ -94,7 +94,7 @@ namespace Conventions.API.Controllers
                 existing.Telephone = updatePersonDto.Telephone;
                 existing.Email = updatePersonDto.Email;
 
-                _peopleRepository.UpdatePerson(existing);
+                _peopleRepository.UpdateUser(existing);
 
                 return NoContent();
             }
@@ -110,13 +110,13 @@ namespace Conventions.API.Controllers
         {
             try
             {
-                var existing = _peopleRepository.GetPerson(id);
+                var existing = _peopleRepository.GetUser(id);
                 if (existing == null)
                 {
                     return NotFound();
                 }
 
-                _peopleRepository.DeletePerson(id);
+                _peopleRepository.DeleteUser(id);
                 return NoContent();
             }
             catch (Exception e)
@@ -135,7 +135,7 @@ namespace Conventions.API.Controllers
 				{
 					return StatusCode(404, "Convention not found");
 				}
-				if (_peopleRepository.GetPerson(id) == null)
+				if (_peopleRepository.GetUser(id) == null)
 				{
 					return NotFound();
 				}
@@ -155,7 +155,7 @@ namespace Conventions.API.Controllers
 		{
 			try
 			{
-				if (_peopleRepository.GetPerson(id) == null)
+				if (_peopleRepository.GetUser(id) == null)
 				{
 					return NotFound();
 				}

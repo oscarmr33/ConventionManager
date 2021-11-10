@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Convention.Client.Models
 {
-	public class PersonDto
+	public class UserDto
 	{
 		public Guid Id { get; set; }
 		public string FirstName { get; set; }

@@ -29,17 +29,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Conventions" asp-action="Index" class="navbar-brand">Conventions</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (User.IsInRole("admin"))
-                    {
-                    <li><a asp-area="" asp-controller="Conventions" asp-action="Index">Home</a></li>                    
-                    }
+                    <li><a asp-area="" asp-controller="Conventions" asp-action="Index">Conventions</a></li>                    
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <li><a asp-area="" asp-controller="Conventions" asp-action="Logout">Logout</a></li>
+                    <li><a asp-area="" asp-controller="Authorization" asp-action="Logout">Logout</a></li>
                     }
                 </ul>
             </div>

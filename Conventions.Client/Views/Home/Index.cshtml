@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="jumbotron">
+    <h1>Home</h1>
+    <p class="lead">Welcome to the Convention platform, here you can find all the comming and exciting Conventions from the company!</p>
+</div>
+
+<div>
+    <div class="row">
+        <h2>Getting started</h2>
+        <p>
+            From the upper menu you can access to a list with all the conventions and register to any of them. You can also register new talks in there.
+        </p>
+    </div>
+    <div class="row">
+        <h2>Get your talks</h2>
+        <p>Also in the upper menu, you have the posibility to see all the talks you have been register to.</p>
+    </div>
+    @if (User.IsInRole("admin"))
+    {
+    <div class="row">
+        <h2>Create new </h2>
+        <p>Finally, you can also create new Conventions from the "Conventions" list.</p>
+    </div>
+    }
+</div>
