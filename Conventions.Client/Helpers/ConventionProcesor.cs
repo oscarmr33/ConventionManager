@@ -3,6 +3,7 @@ using Convention.Client.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -12,15 +13,17 @@ namespace Convention.Client.Helpers
 	{
 		private readonly string _baseUrl = "https://localhost:44398/conventions";
 		private readonly Locations _locations;
+		private readonly IHttpClientFactory _httpClientFactory;
 
-		public ConventionProcesor()
+		public ConventionProcesor(IHttpClientFactory clientFactory)
 		{
-			_locations = new Locations();
+			_httpClientFactory = clientFactory;
+			_locations = new Locations(_httpClientFactory);
 		}
 
 		public async Task<ConventionModel> GetConvention(Guid id)
 		{
-			var apiCaller = new ApiCaller();
+			var apiCaller = new ApiCaller(_httpClientFactory);
 			string apiUrl = $"{_baseUrl}/{id}";
 			var response = await apiCaller.Get<ConventionDto>(apiUrl);
 			var result = response.FromDto();

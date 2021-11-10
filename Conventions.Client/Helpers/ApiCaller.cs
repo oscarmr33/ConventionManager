@@ -12,22 +12,34 @@ namespace Convention.Client.Helpers
 {
 	public class ApiCaller
 	{
+		private readonly IHttpClientFactory _httpClientFactory;
+
+		public ApiCaller(IHttpClientFactory httpClientFactory)
+		{
+			_httpClientFactory = httpClientFactory;
+		}
+
 		public async Task<T> Get<T>(string url)
 		{
 			T res = default(T);
 
-			using (HttpClient client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(url);
-				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+			var httpClient = _httpClientFactory.CreateClient("ConventionsApi");
 
-				HttpResponseMessage response = await client.GetAsync(url);
-				if (response.IsSuccessStatusCode)
-				{
-					var data = await response.Content.ReadAsStringAsync();
-					res = JsonConvert.DeserializeObject<T>(data);
-				}
+			var request = new HttpRequestMessage(
+				HttpMethod.Get,
+				$"{httpClient.BaseAddress}{url}");
+
+			var response = await httpClient.SendAsync(
+				request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+
+			if (response.IsSuccessStatusCode)
+			{
+				var data = await response.Content.ReadAsStringAsync();
+				res = JsonConvert.DeserializeObject<T>(data);
+			}
+			else if(response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
+			{
+				throw new HttpRequestException("Access to the Api denied");
 			}
 
 			return res;

@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using Convention.Client.Helpers;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -30,13 +31,16 @@ namespace Convention.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            services.AddHttpContextAccessor();
+            services.AddTransient<BearerTokenHandler>();
+
             // create an HttpClient used for accessing the API
-            services.AddHttpClient("APIClient", client =>
+            services.AddHttpClient("ConventionsApi", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44389/");
+                client.BaseAddress = new Uri("https://localhost:44398");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            }).AddHttpMessageHandler<BearerTokenHandler>();
 
             services.AddHttpClient("IDPClient", client => 
             {
@@ -60,12 +64,13 @@ namespace Convention.Client
                     options.Authority = "https://localhost:5001/";
                     options.ClientId = "conventionsclient";
                     options.ResponseType = "code";
-                    options.UsePkce = true;
-                    //options.Scope.Add("openid");
-                    //options.Scope.Add("profile");
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
                     options.Scope.Add("conventionsapi");
+                    options.ClaimActions.DeleteClaim("sid");
+                    options.ClaimActions.DeleteClaim("idp");
+                    options.ClaimActions.DeleteClaim("s_hash");
+                    options.ClaimActions.DeleteClaim("auth_time");
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
                     options.SaveTokens = true;
                     options.ClientSecret = "secret";

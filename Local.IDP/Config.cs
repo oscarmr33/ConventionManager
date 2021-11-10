@@ -19,10 +19,26 @@ namespace Local.IDP
                 new IdentityResource("roles", "Your roles", new List<string> { "role" })
             };
 
+        public static IEnumerable<ApiResource> Apis =>
+           new ApiResource[]
+           {
+                new ApiResource(
+                    "conventionsapi",
+                    "Conventions Api",
+                    new List<string>() { "role", "profile" })
+                {
+                    Scopes = { "conventionsapi" }
+                }
+           };
+
+
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
-            { 
-                new ApiScope("conventionsapi", "Conventions Api")
+            {
+                new ApiScope(
+                    "conventionsapi",
+                    "Conventions Api",
+                    new List<string>() { "role", "profile" }),
             };
 
         public static IEnumerable<Client> Clients =>
@@ -32,7 +48,8 @@ namespace Local.IDP
                 {
                     ClientName = "Conventions Manager",
                     ClientId = "conventionsclient",
-                    AllowedGrantTypes = new List<string> () { GrantType.AuthorizationCode },
+                    AllowedGrantTypes = GrantTypes.Code,
+                    //AllowedGrantTypes = new List<string> () { GrantType.AuthorizationCode },
                     RedirectUris = new List<string>()
 					{
                         "https://localhost:44389/signin-oidc"

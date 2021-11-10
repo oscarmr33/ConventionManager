@@ -28,21 +28,27 @@ namespace Convention.Client.Controllers
 
         public ConventionsController(IHttpClientFactory httpClientFactory)
         {
-            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _procesor = new ConventionProcesor();
+            _httpClientFactory = httpClientFactory;
+            _procesor = new ConventionProcesor(httpClientFactory);
         }
 
         public async Task<IActionResult> Index()
         {
-            var apiCaller = new ApiCaller();
-            var model = await apiCaller.Get<IEnumerable<ConventionModel>>(_baseUrl);
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                await CreateUser();
-            }
+                var apiCaller = new ApiCaller(_httpClientFactory);
+                var model = await apiCaller.Get<IEnumerable<ConventionModel>>("conventions");
 
-            return View(model);
+                return View(model);
+            }
+            catch(HttpRequestException e)
+			{
+                return RedirectToAction("AccessDenied", "Authorization");
+			}
+            catch(Exception e)
+			{
+                throw e;
+			}
         }
 
         public async Task<ActionResult> Details(Guid id)
@@ -67,7 +73,7 @@ namespace Convention.Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var apiCaller = new ApiCaller();
+                var apiCaller = new ApiCaller(_httpClientFactory);
                 apiCaller.Post(_baseUrl, model);
             }
 
@@ -88,7 +94,7 @@ namespace Convention.Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                var apiCaller = new ApiCaller();
+                var apiCaller = new ApiCaller(_httpClientFactory);
                 var url = $"{_baseUrl}/{model.Id}";
                 apiCaller.Put(url, model);
             }

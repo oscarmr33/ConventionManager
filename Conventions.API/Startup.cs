@@ -1,5 +1,6 @@
 using Conventions.API.Repositories;
 using Conventions.API.Repositories.Interfaces;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,14 @@ namespace Conventions.API
             services.AddSingleton<IPeopleRepository, InMemPeopleRepository>();
             services.AddSingleton<IConventionRepository, InMemConventionRepository>();
             services.AddSingleton<ITalksRepository, InMenTalksRepository>();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "https://localhost:5001";
+                    options.ApiName = "conventionsapi";
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Conventions.API", Version = "v1" });
@@ -52,6 +61,8 @@ namespace Conventions.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

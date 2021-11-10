@@ -3,6 +3,7 @@ using Conventions.API.Repositories;
 using Conventions.API.Repositories.Interfaces;
 using Conventions.Models.Dto;
 using Conventions.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Conventions.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ConventionsController : ControllerBase
     {
         private readonly IConventionRepository _conventionRepository;
@@ -28,6 +30,8 @@ namespace Conventions.API.Controllers
         [HttpGet]
         public IEnumerable<ConventionDto> GetConventions()
         {
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
             return  _conventionRepository.GetConventions().Select(convention => convention.AsDto(_peopleRepository));
         }
 
@@ -53,6 +57,7 @@ namespace Conventions.API.Controllers
 
         //POST /conventions
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult<ConventionDto> CreateConvention(CreateConventionDto createConvention)
         {
             try
