@@ -40,6 +40,9 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
     </dl>
+    <br />
+    @Html.ActionLink("Subscribe to Talk", "Register", new { id = Model.Id })
+    @Html.ActionLink("Create a Talk", "Create", "Talks", new { id = Model.Id })
     <br /><br />
     <h4>Attendees</h4>
     <table class="table" border-collapse="collapse;">

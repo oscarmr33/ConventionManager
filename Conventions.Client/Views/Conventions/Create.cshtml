@@ -60,13 +60,10 @@
 </div>
 
 @section Scripts {
-    <script src="~/Scripts/external/jquery/jquery.js"></script>
-    <script src="~/Scripts/jquery-ui.js"></script>
-    <link type="text/css" href="~/Scripts/jquery-ui.css" rel="stylesheet" />
-
-    <script type="text/javascript">
-        $(function () { // will trigger when the document is ready
-            $('.datepicker').datepicker(); //Initialise any date pickers
+    
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
         });
     </script>
 }

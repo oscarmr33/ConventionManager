@@ -17,7 +17,7 @@ namespace Convention.Client.Extension
 				Name = conventionDto.Name,
 				EndDate = conventionDto.EndDate,
 				StartDate = conventionDto.StartDate,
-				Attendees = conventionDto.Attendees.Select(personDto => personDto.FromDto()).ToList(),
+				Attendees = conventionDto.Attendees?.Select(personDto => personDto?.FromDto())?.ToList(),
 			};
 		}
 
@@ -29,6 +29,21 @@ namespace Convention.Client.Extension
 				Email = personDto.Email,
 				Name = $"{personDto.FirstName} {personDto.LastName}",
 				Telephone = personDto.Telephone
+			};
+		}
+
+		public static TalkModel FromDto(this TalkDto talk)
+		{
+			return new TalkModel()
+			{
+				Id = talk.Id,
+				Convention = talk.Convention?.FromDto(),
+				Description = talk.Description,
+				Name = talk.Name,
+				LengthHours = talk.LengthHours,
+				Speaker = talk.Speaker.FromDto(),
+				StartDate = talk.StartDate,
+				Attendees = talk.Attendees?.Select(personDto => personDto?.FromDto())?.ToList()
 			};
 		}
 	}

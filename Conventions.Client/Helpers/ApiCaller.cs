@@ -44,6 +44,26 @@ namespace Convention.Client.Helpers
 			return res;
 		}
 
+		public async Task Get(string url)
+		{
+			var httpClient = _httpClientFactory.CreateClient("ConventionsApi");
+
+			var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+			var response = await httpClient.SendAsync(
+				request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+
+			if (response.IsSuccessStatusCode)
+			{
+				var data = await response.Content.ReadAsStringAsync();
+				var res = JsonConvert.DeserializeObject<string>(data);
+			}
+			else if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.Forbidden)
+			{
+				throw new HttpRequestException("Access to the Api denied");
+			}
+		}
+
 		public async Task Post<T>(string url, T payload)
 		{
 			var httpClient = _httpClientFactory.CreateClient("ConventionsApi");

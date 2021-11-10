@@ -60,7 +60,7 @@ namespace Conventions.API.Controllers
             {
                 User person = new()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = createPersonDto.Id,
                     FirstName = createPersonDto.FirstName,
                     LastName = createPersonDto.LastName,
                     Email = createPersonDto.Email,

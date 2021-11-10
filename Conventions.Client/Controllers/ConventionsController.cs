@@ -24,11 +24,13 @@ namespace Convention.Client.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ConventionProcesor _procesor;
+        private readonly UserProcesor _userProcesor;
 
         public ConventionsController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
             _procesor = new ConventionProcesor(httpClientFactory);
+            _userProcesor = new UserProcesor(httpClientFactory);
         }
 
         public async Task<IActionResult> Index()
@@ -139,6 +141,13 @@ namespace Convention.Client.Controllers
             {
                 throw e;
             }
+        }
+
+        public async Task<ActionResult> Register(Guid id)
+		{
+            var userId = new Guid(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value);
+            await _userProcesor.RegisterToConvention(id, userId);
+            return Redirect($"/Conventions/Details/{id}");
         }
 
         public async Task CreateUser()

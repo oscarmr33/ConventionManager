@@ -13,8 +13,8 @@ namespace Convention.Client.Models
         public DateTimeOffset StartDate { get; set; }
         public decimal LengthHours { get; set; }
         public UserModel Speaker { get; set; }
-        public UserModel Convention { get; set; }
+        public ConventionModel Convention { get; set; }
         public List<UserModel> Attendees { get; set; }
-        public string LocationId { get; set; }
+        public LocationModel Location { get; set; }
     }
 }

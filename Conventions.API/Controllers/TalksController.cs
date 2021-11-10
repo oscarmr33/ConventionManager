@@ -151,7 +151,7 @@ namespace Conventions.API.Controllers
             }
         }
 
-        //POST /talks/id&attendeeId
+        //GET /talks/id&attendeeId
         [HttpGet("register/{id}")]
         public ActionResult RegisterToTalk(Guid id, Guid attendeeId)
 		{
@@ -175,6 +175,28 @@ namespace Conventions.API.Controllers
 			{
                 return StatusCode(500, $"An error has occurred while Registering user to the talk: {e.Message}");
 			}
+        }
+
+        //GET /talks/id&attendeeId
+        [HttpGet("getbyconvention/{id}")]
+        public ActionResult<IEnumerable<TalkDto>> GetByConvention(Guid conventionId)
+        {
+            try
+            {
+                var existing = _conventionRepository.GetConvention(conventionId);
+                if (existing == null)
+                {
+                    return NotFound();
+                }
+
+                var talks = _talkRepository.GetTalks();
+
+                return StatusCode(200, talks.Where(t => t.ConventionId == conventionId).Select(t => t.AsDto(_userRepository, _conventionRepository)));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error has occurred while Registering user to the talk: {e.Message}");
+            }
         }
     }
 }

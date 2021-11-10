@@ -42,5 +42,12 @@ namespace Convention.Client.Helpers
 			var apiCaller = new ApiCaller(_httpClientFactory);
 			await apiCaller.Post(_baseUrl, user);
 		}
+
+		public async Task RegisterToConvention(Guid conventionId, Guid userId)
+		{
+			var apiCaller = new ApiCaller(_httpClientFactory);
+			var url = $"{_baseUrl}/register/{userId}?conventionId={conventionId}";
+			await apiCaller.Get(url);
+		}
 	}
 }
