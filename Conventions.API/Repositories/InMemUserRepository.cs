@@ -9,9 +9,10 @@ namespace Conventions.API.Repositories
     {
         private readonly List<User> _people = new()
         {
-            new User { Id = Guid.Parse("7b80daf0-3cca-446a-bb21-f8036761d115"), FirstName = "Oscar", LastName = "Medina", Email = "oscarmedinaici@hotmail.com", Telephone = "52810373" },
-            new User { Id = Guid.Parse("0e2118b1-ba06-4145-a42b-51dd710c44d0"), FirstName = "Maj", LastName = "Abildgren", Email = "majabildgren@gmail.com", Telephone = "52541640" },
-            new User { Id = Guid.Parse("74155be9-fd2a-4d34-8cc1-b82169d7d97b"), FirstName = "Raul", LastName = "Pineda", Email = "hola@raulpineda.com", Telephone = "56987423" }
+            new User { Id = Guid.Parse("7b80daf0-3cca-446a-bb21-f8036761d115"), FirstName = "Oscar", LastName = "Medina", Email = "oscar@email.com", Telephone = "52810373" },
+            new User { Id = Guid.Parse("0e2118b1-ba06-4145-a42b-51dd710c44d0"), FirstName = "Maj", LastName = "Abildgren", Email = "maj@email.com", Telephone = "52541640" },
+            new User { Id = Guid.Parse("74155be9-fd2a-4d34-8cc1-b82169d7d97b"), FirstName = "Raul", LastName = "Pineda", Email = "raul@email.com", Telephone = "56987423" },
+            new User { Id = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6"), FirstName = "Jimmy", LastName = "Carlsen", Email = "jimmy@email.com", Telephone = "56987423" },
         };
 
         public IEnumerable<User> GetUsers()

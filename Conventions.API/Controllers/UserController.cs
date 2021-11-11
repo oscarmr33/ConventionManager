@@ -3,6 +3,7 @@ using Conventions.API.Repositories;
 using Conventions.API.Repositories.Interfaces;
 using Conventions.Models.Dto;
 using Conventions.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Linq;
 namespace Conventions.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
@@ -140,7 +142,10 @@ namespace Conventions.API.Controllers
 					return NotFound();
 				}
 
-				existingConvention.AttendeesId.Add(id);
+                if(!existingConvention.AttendeesId.Contains(id))
+                {
+                    existingConvention.AttendeesId.Add(id);
+                }
 
 				return NoContent();
 			}

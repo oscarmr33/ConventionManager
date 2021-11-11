@@ -40,12 +40,12 @@ namespace Convention.Client.Helpers
 
 		public async Task<IEnumerable<TalkModel>> GetTalksByConvention(Guid id)
 		{
-			var url = $"{_baseUrl}/getbyconvention({id}";
+			var url = $"{_baseUrl}/getbyconvention/{id}";
 			var apiCaller = new ApiCaller(_httpClientFactory);
-			var result = await apiCaller.Get<IEnumerable<TalkDto>>(_baseUrl);
+			var result = await apiCaller.Get<IEnumerable<TalkDto>>(url);
 			var res = new List<TalkModel>();
 
-			if (result != null)
+			if (result != null && result.Count() > 0)
 			{
 				foreach (var talk in result)
 				{

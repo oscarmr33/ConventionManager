@@ -17,7 +17,7 @@ namespace Conventions.API.Repositories
                 Description = "The spring convention for the company",
                 StartDate = new DateTimeOffset(2021,3,1,8,0,0,TimeSpan.Zero), 
                 EndDate = new DateTimeOffset(2021, 3, 15, 17, 0, 0, TimeSpan.Zero),
-                LocationsId = new List<string>() { "10-barrel-brewing-co-san-diego", "10-barrel-brewing-co-san-diego", "10-barrel-brewing-co-san-diego" },
+                LocationsId = new List<string>() { "10-barrel-brewing-co-san-diego", "12-west-brewing-company-production-facility-mesa", "12-gates-brewing-company-williamsville" },
                 AttendeesId = new List<Guid>()
                 {
                     Guid.Parse("7b80daf0-3cca-446a-bb21-f8036761d115"),
@@ -32,7 +32,7 @@ namespace Conventions.API.Repositories
                 Description = "The summer convention for the company",
                 StartDate = new DateTimeOffset(2021, 7, 1, 8, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2021, 7, 15, 17, 0, 0, TimeSpan.Zero),
-                LocationsId = new List<string>() { "10-barrel-brewing-co-san-diego", "10-barrel-brewing-co-san-diego", "10-barrel-brewing-co-san-diego" },
+                LocationsId = new List<string>() { "10-barrel-brewing-co-san-diego",  "10-barrel-brewing-co-bend-1" },
                 AttendeesId = new List<Guid>()
                 {
                     Guid.Parse("7b80daf0-3cca-446a-bb21-f8036761d115"),
@@ -46,7 +46,7 @@ namespace Conventions.API.Repositories
                 Description = "The winter convention for the company",
                 StartDate = new DateTimeOffset(2021, 12, 1, 8, 0, 0, TimeSpan.Zero),
                 EndDate = new DateTimeOffset(2021, 12, 15, 17, 0, 0, TimeSpan.Zero),
-                LocationsId = new List<string>() { "10-barrel-brewing-co-san-diego", "10-barrel-brewing-co-san-diego", "10-barrel-brewing-co-san-diego" },
+                LocationsId = new List<string>() { "10-barrel-brewing-co-bend-pub-bend", "10-barrel-brewing-co-denver-denver", "10-barrel-brewing-co-san-diego" },
                 AttendeesId = new List<Guid>()
                 {
                     Guid.Parse("7b80daf0-3cca-446a-bb21-f8036761d115"),

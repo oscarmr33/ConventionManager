@@ -30,11 +30,11 @@ namespace Convention.Client.Controllers
             _talkProcesor = new TalkProcesor(httpClientFactory);
         }
 
-        public async Task<IActionResult> TalksByConvention(Guid conventiondId)
+        public async Task<IActionResult> TalksByConvention(Guid id)
         {
             try
             {
-                var model = await _talkProcesor.GetTalksByConvention(conventiondId);
+                var model = await _talkProcesor.GetTalksByConvention(id);
 
                 return View(model);
             }

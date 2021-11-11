@@ -3,6 +3,7 @@ using Conventions.API.Repositories;
 using Conventions.API.Repositories.Interfaces;
 using Conventions.Models.Dto;
 using Conventions.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Linq;
 namespace Conventions.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class TalksController : ControllerBase
     {
@@ -166,8 +168,10 @@ namespace Conventions.API.Controllers
                 {
                     return StatusCode(404, "Attendee not found");
                 }
-
-                existing.AttendeesId.Add(attendeeId);
+                if (!existing.AttendeesId.Contains(attendeeId))
+                {
+                    existing.AttendeesId.Add(attendeeId);
+                }
 
                 return NoContent();
             }
@@ -179,19 +183,19 @@ namespace Conventions.API.Controllers
 
         //GET /talks/id&attendeeId
         [HttpGet("getbyconvention/{id}")]
-        public ActionResult<IEnumerable<TalkDto>> GetByConvention(Guid conventionId)
+        public ActionResult<IEnumerable<TalkDto>> GetByConvention(Guid id)
         {
             try
             {
-                var existing = _conventionRepository.GetConvention(conventionId);
+                var existing = _conventionRepository.GetConvention(id);
                 if (existing == null)
                 {
                     return NotFound();
                 }
 
                 var talks = _talkRepository.GetTalks();
-
-                return StatusCode(200, talks.Where(t => t.ConventionId == conventionId).Select(t => t.AsDto(_userRepository, _conventionRepository)));
+                var res = talks.Where(t => t.ConventionId == id).Select(t => t.AsDto(_userRepository, _conventionRepository));
+                return StatusCode(200, res);
             }
             catch (Exception e)
             {
